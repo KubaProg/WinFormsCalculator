@@ -46,8 +46,8 @@ namespace WinFormsApp1
             }
             // Jesli wyrazenie puste to po prostu dopisz i wyswietl w panelu
             else
-            {
-                expression += (button).Text;
+            {  
+                expression = changeOperator((button).Text, expression);                 
                 expression = doubleDotCheck(expression);
                 expression = doubleDivideCheck(expression);
                 expression = doubleMultipleCheck(expression);
@@ -76,6 +76,27 @@ namespace WinFormsApp1
                 expression = "";
             }
 
+        }
+
+        private string changeOperator(string newSign, string expression)
+        {
+            if (expression.Length <= 1)
+            {
+                expression += newSign;
+                return expression;
+            }
+            string lastExpressionSign = expression.Substring(expression.Length - 1);
+            if (!lastExpressionSign.Equals(newSign) && "+-/*".Contains(newSign) && "+-*/".Contains(lastExpressionSign))
+            {
+                int lastIndex = expression.LastIndexOf(lastExpressionSign);
+                expression = expression.Substring(0, lastIndex) + newSign;
+            }
+            else
+            {
+                expression += newSign;
+            }
+          
+            return expression;
         }
 
 
@@ -182,7 +203,7 @@ namespace WinFormsApp1
                     {
                         if (expression[i - 1] == '/')
                         {
-                            warningTextBox.Text = "Nie można używać dwóch kropek obok siebie";
+                            warningTextBox.Text = "Nie można używać dwóch // obok siebie";
                             expression = expression.Substring(0, i);
                         }
                     }
@@ -201,7 +222,7 @@ namespace WinFormsApp1
                     {
                         if (expression[i - 1] == '*')
                         {
-                            warningTextBox.Text = "Nie można używać dwóch kropek obok siebie";
+                            warningTextBox.Text = "Nie można używać dwóch * obok siebie";
                             expression = expression.Substring(0, i);
                         }
                     }
