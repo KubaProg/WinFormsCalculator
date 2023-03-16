@@ -261,9 +261,9 @@ namespace WinFormsApp1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.textBoxOutput);
-            this.panel1.Location = new System.Drawing.Point(315, 51);
+            this.panel1.Location = new System.Drawing.Point(315, 65);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(258, 45);
+            this.panel1.Size = new System.Drawing.Size(258, 31);
             this.panel1.TabIndex = 19;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -271,10 +271,10 @@ namespace WinFormsApp1
             // 
             this.textBoxOutput.BackColor = System.Drawing.Color.White;
             this.textBoxOutput.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxOutput.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxOutput.Location = new System.Drawing.Point(55, 0);
+            this.textBoxOutput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxOutput.Location = new System.Drawing.Point(0, 3);
             this.textBoxOutput.Name = "textBoxOutput";
-            this.textBoxOutput.Size = new System.Drawing.Size(176, 36);
+            this.textBoxOutput.Size = new System.Drawing.Size(255, 22);
             this.textBoxOutput.TabIndex = 0;
             this.textBoxOutput.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
