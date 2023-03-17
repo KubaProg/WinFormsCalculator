@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace WinFormsApp1
 {
@@ -32,9 +34,7 @@ namespace WinFormsApp1
           
             Button button = sender as Button;
             if (button.Name == "buttonChange")
-            {
-                // Find the last number entered in the current calculation
-              
+            {             
                 lastNumIndex = expression.LastIndexOfAny("0123456789".ToCharArray());  
                 lastPartIndex = expression.LastIndexOfAny("+-/*".ToCharArray());
                 if (lastNumIndex >= 0)
@@ -47,8 +47,9 @@ namespace WinFormsApp1
             // Jesli wyrazenie puste to po prostu dopisz i wyswietl w panelu
             else
             {  
-                expression = changeOperator((button).Text, expression);                 
+                expression = changeOperator((button).Text, expression);
                 expression = doubleDotCheck(expression);
+                expression = removeInvalidDots(expression);
                 expression = doubleDivideCheck(expression);
                 expression = doubleMultipleCheck(expression);
                 textBoxOutput.Text = expression;
@@ -59,8 +60,7 @@ namespace WinFormsApp1
         {
 
             string mathOperation = expression.ToString();
-
-            // Compute zalatwia nam w wiekszosci temat walidacj i analizy stringa znak po znaku
+      
             try
             {
                 mathOperation = transformExpressionToDouble(mathOperation);
@@ -68,7 +68,6 @@ namespace WinFormsApp1
                 checkDivisionByZero(mathOperation);
                 expression = textBoxOutput.Text;
             }
-            // W razie gdy wpiszemy niepoprawną formłuę wyrażenie oraz panel kalkulatora są resetowane
             catch (Exception ex)
             {
                 warningTextBox.Text = "Niepoprawna forma wyrażenia: " + textBoxOutput.Text;
@@ -150,12 +149,14 @@ namespace WinFormsApp1
         {
             int divisionSignIndex = expression.IndexOf("/");
             if (divisionSignIndex != -1 && expression[divisionSignIndex+1] == '0' && expression[divisionSignIndex + 2]!='.')
-            {
+            {       
                 warningTextBox.Text = "Nie można dzielić przez 0!";
                 textBoxOutput.Text = "";
+          
             }
             else
             {
+                warningTextBox.Text = "Nie można dzielić przez 0!";
                 warningTextBox.Text = "";
             }
         }
@@ -192,6 +193,68 @@ namespace WinFormsApp1
             }
             return expression;
         }
+      
+
+        public string removeInvalidDots(string expression)
+        {
+            int countDots; 
+            int secondDotIndex;
+            string part;
+            string finalString="";
+            List<string> parts = splitExpression(expression);
+
+                for (int i = 0; i < parts.Count; i++)
+                {
+                    part = parts[i];
+                    if (!(part.Contains("+") || part.Contains("-") || part.Contains("*") || part.Contains("/")))
+                    {
+                        countDots = part.Count(c => c == '.');
+                        secondDotIndex = part.LastIndexOf(".");
+                        if (countDots > 1)
+                        {
+                            part = part.Substring(0, secondDotIndex);
+                        }
+                    }
+                                    
+                    finalString += part;
+            }
+         
+          
+            return finalString;
+        }
+
+        public List<string> splitExpression(string expression)
+        {
+            List<string> parts = new List<string>();
+            string currentPart = "";
+
+            foreach (char c in expression)
+            {
+                if (c == '+' || c == '-' || c == '*' || c == '/')
+                {
+                    if (currentPart != "")
+                    {
+                        parts.Add(currentPart);
+                    }
+                    parts.Add(c.ToString());
+                    currentPart = "";
+                }
+                else
+                {
+                    currentPart += c;
+                }
+            }
+
+            if (currentPart != "")
+            {
+                parts.Add(currentPart);
+            }
+
+            return parts;
+        }
+
+
+
 
         private string doubleDivideCheck(string expression)
         {
