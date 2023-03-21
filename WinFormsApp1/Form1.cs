@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+// 0 na poczatku nie moze byc
 
 namespace WinFormsApp1
 {
@@ -21,7 +22,7 @@ namespace WinFormsApp1
         private string updated;
         private int lastNumIndex;
         private int lastPartIndex;
-        private double result;
+        private int indexForm;
 
         public Form1()
         {
@@ -52,13 +53,15 @@ namespace WinFormsApp1
                 expression = removeInvalidDots(expression);
                 expression = doubleDivideCheck(expression);
                 expression = doubleMultipleCheck(expression);
+                expression = preventZeroOnBeggining(expression, (button).Text);
+                expression = preventOperatorFromBeggining(expression);
                 textBoxOutput.Text = expression;
             }
         }
 
         private void buttonEquals_Click(object sender, EventArgs e)
         {
-
+             
             string mathOperation = expression.ToString();
       
             try
@@ -79,12 +82,12 @@ namespace WinFormsApp1
 
         private string changeOperator(string newSign, string expression)
         {
-            if (expression.Length <= 1)
+            if (expression.Length < 1)
             {
                 expression += newSign;
                 return expression;
-            }
-            string lastExpressionSign = expression.Substring(expression.Length - 1);
+            }string lastExpressionSign = expression.Substring(expression.Length - 1);
+            
             if (!lastExpressionSign.Equals(newSign) && "+-/*".Contains(newSign) && "+-*/".Contains(lastExpressionSign))
             {
                 int lastIndex = expression.LastIndexOf(lastExpressionSign);
@@ -185,7 +188,7 @@ namespace WinFormsApp1
                     {
                         if (expression[i - 1] == '.')
                         {
-                            warningTextBox.Text = "Nie można używać dwóch kropek obok siebie";
+                         //   warningTextBox.Text = "Nie można używać dwóch kropek obok siebie";
                             expression = expression.Substring(0, i);
                         }
                     }
@@ -193,7 +196,41 @@ namespace WinFormsApp1
             }
             return expression;
         }
-      
+
+        public string preventZeroOnBeggining(string expression,string newSign)
+        {      
+
+            if (expression.Length >= 2)
+            {
+               indexForm = expression.Length - 2;
+            }
+            else
+            {
+               indexForm = 0;
+            }
+
+            List<string> parts = splitExpression(expression);
+            for (int i = 0; i < parts.Count; i++)
+            {
+                if (parts[i].StartsWith("0") && parts[i].Length > 1 && parts[i][1] != '.')
+                {
+                    expression = expression.Substring(0, indexForm) + newSign;
+                }
+            }
+            return expression;
+        }
+
+        public string preventOperatorFromBeggining(string expression)
+        {
+
+            if(expression.StartsWith("*") || expression.StartsWith("/"))
+            {
+                expression = expression.Replace(expression[0].ToString(),  "");
+            }
+            
+            return expression;
+
+        }
 
         public string removeInvalidDots(string expression)
         {

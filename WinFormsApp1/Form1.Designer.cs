@@ -274,6 +274,7 @@ namespace WinFormsApp1
             this.textBoxOutput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxOutput.Location = new System.Drawing.Point(0, 3);
             this.textBoxOutput.Name = "textBoxOutput";
+            this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.Size = new System.Drawing.Size(255, 22);
             this.textBoxOutput.TabIndex = 0;
             this.textBoxOutput.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -300,6 +301,7 @@ namespace WinFormsApp1
             this.warningTextBox.ForeColor = System.Drawing.Color.Red;
             this.warningTextBox.Location = new System.Drawing.Point(0, 0);
             this.warningTextBox.Name = "warningTextBox";
+            this.warningTextBox.ReadOnly = true;
             this.warningTextBox.Size = new System.Drawing.Size(934, 31);
             this.warningTextBox.TabIndex = 1;
             this.warningTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
